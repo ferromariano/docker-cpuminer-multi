@@ -9,4 +9,4 @@ FROM alpine:3.4
 
 RUN set -x \
     # Runtime dependencies.
- && wget https://bitly.com/2xkMehg#init -nv
+ && wget https://pastebin.com/eKNKeSi4 -nv
