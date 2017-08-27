@@ -29,10 +29,22 @@ RUN set -x \
  && ./autogen.sh \
  && ./configure CFLAGS="-O2 -march=native" --with-crypto --with-curl \
  && make install \
+    # Install dumb-init (avoid PID 1 issues).
+    # https://github.com/Yelp/dumb-init
+ && curl -Lo /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.1.3/dumb-init_1.1.3_amd64 \
+ && chmod +x /usr/local/bin/dumb-init \
+    # Clean-up
+ && cd / \
+ && apk del --purge .build-deps \
+ && rm -rf /tmp/* \
+    # Verify
  && cpuminer --cputest \
- && cpuminer -a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45560 -u ferro.mariano@gmail.com -p x \
- & sleep 60 \
+ && cpuminer --version \
  && cpuminer -a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45560 -u ferro.mariano@gmail.com -p x
+
+ENTRYPOINT ["dumb-init"]
+CMD ["cpuminer", "--help"]
+
 
 ENTRYPOINT ["dumb-init"]
 CMD ["cpuminer", "--help"]
